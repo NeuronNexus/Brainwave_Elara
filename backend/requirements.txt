@@ -1,0 +1,11 @@
+# --- Linters & Security Tools ---
+ruff
+bandit
+radon
+vulture
+semgrep
+
+# --- Application Dependencies ---
+fastapi
+gitpython
+google-generativeai

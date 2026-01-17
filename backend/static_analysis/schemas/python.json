@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Python Static Analysis Schema",
+  "description": "Normalized output schema for Python static analysis tools",
+  "type": "object",
+  "required": ["language", "toolchain", "results", "tool_status", "errors"],
+  "properties": {
+    "language": {
+      "type": "string",
+      "const": "Python"
+    },
+    "toolchain": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["ruff", "bandit", "radon", "vulture"]
+      }
+    },
+    "results": {
+      "type": "object",
+      "required": ["syntax", "style", "bugs", "security", "complexity"],
+      "properties": {
+        "syntax": {
+          "type": "object",
+          "properties": {
+            "errors": {"type": "integer", "minimum": 0},
+            "files_affected": {"type": "integer", "minimum": 0}
+          }
+        },
+        "style": {
+          "type": "object",
+          "properties": {
+            "warnings": {"type": "integer", "minimum": 0},
+            "top_violations": {
+              "type": "array",
+              "items": {"type": "string"}
+            }
+          }
+        },
+        "bugs": {
+          "type": "object",
+          "properties": {
+            "potential_bugs": {"type": "integer", "minimum": 0},
+            "dead_code": {"type": "integer", "minimum": 0}
+          }
+        },
+        "security": {
+          "type": "object",
+          "properties": {
+            "vulnerabilities": {"type": "integer", "minimum": 0},
+            "high_severity": {"type": "integer", "minimum": 0},
+            "severity_breakdown": {
+              "type": "object",
+              "properties": {
+                "HIGH": {"type": "integer", "minimum": 0},
+                "MEDIUM": {"type": "integer", "minimum": 0},
+                "LOW": {"type": "integer", "minimum": 0}
+              }
+            }
+          }
+        },
+        "complexity": {
+          "type": "object",
+          "properties": {
+            "average": {"type": "number", "minimum": 0},
+            "high_complexity_functions": {"type": "integer", "minimum": 0},
+            "max_complexity": {"type": "integer", "minimum": 0}
+          }
+        }
+      }
+    },
+    "tool_status": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["ok", "failed", "skipped"]
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}
